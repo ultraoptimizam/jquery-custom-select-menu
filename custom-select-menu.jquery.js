@@ -58,7 +58,7 @@
           newHiddenInput,
           newContainer,
           newLabel,
-          labelText,
+          spanText,
           newList,
           newOption,
           selectedOption,
@@ -89,13 +89,13 @@
         selectedOptionValue = selectedOption.attr( 'value' );
 
         // Set the label text to the selected option text
-        labelText = selectedOption.text();
+        spanText = selectedOption.text();
         
         // Create a label to show the selected option
         if( !selectedOptionValue ) {
-          newLabel = $( '<label>' + labelText + '</label>' );
+          newSpan = $( '<span>' + spanText + '</span>' );
         } else {
-          newLabel = $( '<label class="' + settings.selectionMadeClass + '">' + labelText + '</label>' );
+          newSpan = $( '<span class="' + settings.selectionMadeClass + '">' + spanText + '</span>' );
           
           // Add the selected option value to the hidden input
           newHiddenInput.val( selectedOptionValue );
@@ -107,8 +107,8 @@
         // is selected, but the behavior for this is inconsistent across browsers,
         // so we need this as a backup.
         // Source: http://www.w3.org/TR/html401/interact/forms.html#h-17.6.1
-        labelText = $this.find( ':first' ).text();
-        newLabel = $( '<label>' + labelText + '</label>' );
+        spanText = $this.find( ':first' ).text();
+        newSpan = $( '<span>' + spanText + '</span>' );
       }
 
       // Append an unordered list to contain the custom menu options and hide it
@@ -116,13 +116,13 @@
 
       // Add the custom select menu container to the DOM after the original select menu
       // and append the label, list and hidden input to it
-      $this.after( newContainer.append( newLabel, newList, newHiddenInput ) );
+      $this.after( newContainer.append( newSpan, newList, newHiddenInput ) );
 
       // Loop through all the options and create li's to append to the custom menu
       $this.find( 'option' ).each(function(){
         var optionName = $(this).text(),
             optionValue = $(this).attr( 'value' ),
-            markSelected = (optionName === labelText) ? ' class="' + settings.selectedClass + '"' : '';
+            markSelected = (optionName === spanText) ? ' class="' + settings.selectedClass + '"' : '';
 
         // Make sure we have a value before setting one on the newOption
         if( !optionValue ) {
@@ -140,8 +140,8 @@
 
         // When the label is clicked, toggle the menu
         if( target.is( 'label' ) ){
-          newLabel.toggleClass( settings.openedClass );
-          newLabel.parent().find( 'ul' ).toggle();
+          newSpan.toggleClass( settings.openedClass );
+          newSpan.parent().find( 'ul' ).toggle();
         }
 
         // When an option is clicked, update the menu with that option
@@ -154,7 +154,7 @@
       newContainer.on( 'keyup', function( e ) {
         // Enter key opens the menu
         if( e.keyCode === 13 ) {
-          $(this).find( newLabel ).addClass( settings.openedClass );
+          $(this).find( newSpan ).addClass( settings.openedClass );
           $(this).find( newList ).show();
         }
 
@@ -192,7 +192,7 @@
       // If the container div loses focus and the menu is visible, close it
       newContainer.on( 'blur', function() {
         if( $(this).find( newList ).is( ':visible' ) ) {
-          $(this).find( newLabel ).removeClass( settings.openedClass );
+          $(this).find( newSpan ).removeClass( settings.openedClass );
           $(this).find( newList ).hide();
         }
       });
@@ -200,7 +200,7 @@
       // Pressing esc closes the menu
       $('html').on( 'keyup', function( e ) {
         if( e.keyCode === 27 ) {
-          newLabel.removeClass( settings.openedClass );
+          newSpan.removeClass( settings.openedClass );
           newList.hide();
         }
       });
@@ -212,9 +212,9 @@
 
         // NOTE: addBack() requires jQuery 1.8 and later
         // (you might be able to use andSelf() for < 1.8, but it has been deprecated)
-        if ( !target.parents().addBack().is( '.' + settings.menuClass + ' ul, .' + settings.menuClass + ' label' ) ) {
+        if ( !target.parents().addBack().is( '.' + settings.menuClass + ' ul, .' + settings.menuClass + ' span' ) ) {
           // Clicked outside
-          $('.' + settings.menuClass + ' label').removeClass( settings.openedClass );
+          $('.' + settings.menuClass + ' span').removeClass( settings.openedClass );
           $('.' + settings.menuClass + ' ul').hide();
         }
       });
