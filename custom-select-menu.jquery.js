@@ -152,8 +152,8 @@
 
       // Use arrows keys to navigation the menu
       newContainer.on( 'keyup', function( e ) {
-        // Arrows keys open the menu
-        if( e.keyCode === 38 || e.keyCode === 40 ) {
+        // Enter key opens the menu
+        if( e.keyCode === 13 ) {
           $(this).find( newLabel ).addClass( settings.openedClass );
           $(this).find( newList ).show();
         }
